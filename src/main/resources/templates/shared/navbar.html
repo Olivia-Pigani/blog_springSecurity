@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="~{shared/bootstrap :: bootstrapImports}"></span>
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" th:if="${ session.isLogged != null && session.isLogged}">
+                    <a class="nav-link" th:href="@{/post-form}">Add a post</a>
+                </li>
+                <li class="nav-item" th:if="${session.isLogged != null && session.isLogged}">
+                    <a class="nav-link" th:href="@{/signout}">Sign out</a>
+                </li>
+                <li class="nav-item" th:if="${session.isLogged == null ||!session.isLogged}">
+                    <a class="nav-link" th:href="@{/auth-form}">Sign in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+</body>
+</html>

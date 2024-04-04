@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Commentaries list</title>
+    <span th:replace="~{shared/bootstrap :: bootstrapImports}"></span>
+</head>
+<body>
+
+<div>
+<a th:href="@{/com-form/{postId}(postId=${blogPost.id})}"><button class="btn btn-primary">Add a comment</button></a>
+</div>
+
+<div class="card mb-3 " th:if="${commentaryList != null}">
+    <div class="row g-0 my-2" th:each="com : ${commentaryList}">
+        <div class="col-md-4">
+            <img th:src="@{/image/user-face.png}" class="img-fluid rounded-start" alt="user profil picture">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${com.userName}"></h5>
+                <p class="card-text" th:text="${com.email}"></p>
+                <p class="card-text" th:text="${com.content}"></p>
+            </div>
+        </div>
+
+        <div th:if="${session.isLogged != null && session.isLogged}">
+            <a th:href="@{/deletecomment/{commentId}(commentId=${com.id})}"><button class="btn btn-danger">Delete</button></a>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

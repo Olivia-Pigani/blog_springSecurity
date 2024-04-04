@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <span th:replace="~{shared/bootstrap :: bootstrapImports}"></span>
+</head>
+<body>
+
+<header>
+
+    <span th:replace="~{shared/navbar}"></span>
+
+
+</header>
+
+
+<main class="container-fluid">
+
+    <h1 th:text="${blogName}"></h1>
+
+    <div class="text-center mb-5">
+        <img th:src="@{/image/home-image.jpg}" alt="home image" class="mx-auto" width="600" height="250">
+    </div>
+
+
+    <span th:replace="~{posts-list}"></span>
+
+
+</main>
+
+
+<span th:replace="~{shared/footer}"></span>
+
+
+</body>
+</html>

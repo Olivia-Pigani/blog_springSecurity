@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Commentary's form</title>
+    <span th:replace="~{shared/bootstrap :: bootstrapImports}"></span>
+</head>
+<body>
+
+<header>
+
+    <span th:replace="~{shared/navbar}"></span>
+
+</header>
+
+<main class="container-fluid">
+
+    <h1 class="my-4">Commentary's form</h1>
+    <h2 class="my-4" th:text="${blogPost.title}"></h2>
+
+
+<form th:action="@{/addCommentary/{postId}(postId=${blogPost.id})}" th:object="${commentary}" method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+
+    <div class="mb-3">
+        <label for="userName" class="form-label">Username</label>
+        <input type="text" class="form-control" id="userName" aria-describedby="emailHelp" th:field="*{userName}">
+        <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></span>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" th:field="*{email}">
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    </div>
+    <div class="mb-3">
+        <label for="content" class="form-label">Commentary</label>
+        <input type="text" class="form-control" id="content" th:field="*{content}">
+        <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+</main>
+
+</body>
+</html>

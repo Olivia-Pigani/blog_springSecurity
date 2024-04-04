@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <span th:replace="~{shared/bootstrap :: bootstrapImports}"></span>
+</head>
+<body>
+
+<header>
+
+    <span th:replace="~{shared/navbar}"></span>
+
+</header>
+
+<main class="container-fluid">
+
+    <h1 class="my-4">My blog post</h1>
+
+    <form th:action="@{/addOrUpdateAPost}" th:object="${blogPost}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{postDate}">
+
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" aria-describedby="emailHelp" th:field="*{title}">
+            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+        </div>
+        <div class="mb-3">
+            <label for="postContent" class="form-label">Content</label>
+            <input type="text" class="form-control" id="postContent" th:field="*{postContent}">
+            <span th:if="${#fields.hasErrors('postContent')}" th:errors="*{postContent}"></span>
+        </div>
+        <div class="mb-3">
+            <label for="authorName" class="form-label">Author name</label>
+            <input type="text" class="form-control" id="authorName" th:field="*{authorName}">
+            <span th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}"></span>
+        </div>
+        <div class="mb-3">
+            <label for="authorName" class="form-label">Post's image</label>
+            <input type="text" class="form-control" id="imageUrl" th:field="*{imageUrl}">
+            <span th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></span>
+        </div>
+
+        <div th:if="${blogPost.getId() == null}">
+        <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+        <div th:if="${blogPost.getId() != null}">
+        <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+</body>
+</html>

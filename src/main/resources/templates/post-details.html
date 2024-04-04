@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header>
+
+    <span th:replace="~{shared/navbar}"></span>
+
+</header>
+
+
+<main class="container-fluid">
+
+    <div class="row col-12">
+        <div class="d-flex justify-content-center my-4">
+            <img class="text-center" th:src="${blogPost.imageUrl}" alt="post's details" height="350" width="400">
+        </div>
+        <h1 class="text-center my-4" th:text="${blogPost.title}"></h1>
+        <div th:if="${session.isLogged != null && session.isLogged}">
+        <a th:href="@{/post-form/{blogPostId}(blogPostId=${blogPost.id})}"><button>Update</button></a>
+        </div>
+
+        <div class="col-6 offset-md-3 ">
+        <p th:text="${blogPost.postContent}"></p>
+            <div>
+
+                <div>
+                    <span>Author : </span>
+                    <span th:text="${blogPost.authorName}"></span>
+                </div>
+
+                <div>
+
+                    <span>Written the : </span>
+                    <span th:text="${#dates.format(blogPost.postDate, 'dd-MM-yyyy')}"></span>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class="col-8 offset-md-2 mt-5">
+
+            <h2 class="my-3">Commentaries</h2>
+
+            <div th:replace="~{coms-list}"></div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</main>
+
+
+<span th:replace="~{shared/footer}"></span>
+
+
+</body>
+<head>
+    <meta charset="UTF-8">
+    <title>Post's details</title>
+</head>
+</html>
