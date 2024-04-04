@@ -37,6 +37,21 @@ services:
     networks:
       - mynetwork
 
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - ${LOCALHOST_PGADMIN_PORT}:${PGADMIN_PORT}
+    depends_on:
+      - postgres
+    networks:
+      - mynetwork
+
+
 networks:
   mynetwork:
     driver: bridge
