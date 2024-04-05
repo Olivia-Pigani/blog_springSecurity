@@ -2,15 +2,23 @@ package com.example.blog_spring_mvc.model;
 
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 
 @Getter
 @Setter
 public class Admin {
 
+    @Value("${info.admin.email}")
+    private String adminEmail;
 
-    private String adminMail = "admin@email.com";
+    @Value("${info.admin.password}")
+    private String adminPassword;
 
-    private String password ="1234aA";
+
+    private String adminMail = adminEmail;
+
+    private String password =adminPassword;
+
 
     private static volatile Admin admin = null;
 

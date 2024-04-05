@@ -9,21 +9,28 @@ This project is dockerized, development mode and production mode are available i
 
 You have to add at the same location of the "docker-compose.yml" file : a ".env" file, which contain :
 ```
-BLOG_SPRING_PORT=?
-DB_PORT=?
-DB_HOST=?
-DB_SCHEMA=?
+BLOG_SPRING_PORT=<?>
+DB_PORT=<?>
+DB_HOST=<?>
+DB_SCHEMA=<?>
 
-DB_USER=?
-DB_PASS=?
+DB_USER=<?>
+DB_PASS=<?>
 
-POSTGRES_USER=?
-POSTGRES_PASSWORD=?
-POSTGRES_DB=?
+POSTGRES_USER=<?>
+POSTGRES_PASSWORD=<?>
+POSTGRES_DB=<?>
 
-LOCALHOST_PGADMIN_PORT=?
-PGADMIN_DEFAULT_PASSWORD=?
-PGADMIN_DEFAULT_EMAIL=?
+LOCALHOST_PGADMIN_PORT=<?>
+PGADMIN_DEFAULT_PASSWORD=<?>
+PGADMIN_DEFAULT_EMAIL=<?>
+PGADMIN_PORT=80
+
+ADMIN_EMAIL=<?>
+ADMIN_PASSWORD=<?>
+
+
+
 ```
 
 ### Pgadmin
