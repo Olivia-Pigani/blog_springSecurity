@@ -1,21 +1,40 @@
-This project is dockerized, dev and prod mode are available in the spring Dokerfile.
+# About
 
-pgadmin : 
+This project is dockerized, development mode and production mode are available in the Dokerfile.
 
-Log into pgAdmin: Use the email and password you've set with PGADMIN_DEFAULT_EMAIL and PGADMIN_DEFAULT_PASSWORD to log into the pgAdmin web interface.
+## Set up  
 
-Add a New Server in pgAdmin:
 
-Please make 
-In the pgAdmin dashboard, right-click on 'Servers' in the left sidebar and select 'Create' > 'Server'.
-In the 'Create Server' dialog, go to the 'General' tab and give your server a meaningful name.
-Switch to the 'Connection' tab.
-Configure the Server Connection:
+### .env file
 
-Hostname/address: Enter postgres, which is the service name of your PostgreSQL container. Docker's internal networking allows services within the same network to communicate using their service names as hostnames.
-Port: Use the default PostgreSQL port 5432, unless you've configured it differently.
-Maintenance database: Use the database name you've specified in POSTGRES_DB.
-Username: Enter the username you've set in POSTGRES_USER.
-Password: Enter the password you've set in POSTGRES_PASSWORD.
-You might want to check the 'Save password' option for convenience.
-Click 'Save' to finish setting up the server connection.
+You have to add at the same location of the "docker-compose.yml" file : a ".env" file, which contain :
+```
+BLOG_SPRING_PORT=?
+DB_PORT=?
+DB_HOST=?
+DB_SCHEMA=?
+
+DB_USER=?
+DB_PASS=?
+
+POSTGRES_USER=?
+POSTGRES_PASSWORD=?
+POSTGRES_DB=?
+
+LOCALHOST_PGADMIN_PORT=?
+PGADMIN_DEFAULT_PASSWORD=?
+PGADMIN_DEFAULT_EMAIL=?
+```
+
+### Pgadmin
+
+Use the email and password you've set with PGADMIN_EMAIL and PGADMIN_PASSWORD to log into it, then, right-click on 'Servers' and select 'Create' > 'Server',
+go to the 'General' and give your server a name, then switch to the 'Connection' tab :
+
+1. Hostname/address:  refer to the service name of your PostgreSQL container, so "postgres".
+2. Port: refer to DB_PORT
+3. Maintenance database: refer to POSTGRES_DB
+4. Username: refer to POSTGRES_USER.
+5. Password:refer to POSTGRES_PASSWORD.
+
+Click 'Save'.
