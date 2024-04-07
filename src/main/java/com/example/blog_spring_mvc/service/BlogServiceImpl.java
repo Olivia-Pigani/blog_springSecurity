@@ -20,7 +20,6 @@ public class BlogServiceImpl implements IBlogService {
 
     private final BlogPostRepository blogPostRepository;
     private final CommentaryRepository commentaryRepository;
-    private Admin admin;
     private final ResourceLoader resourceLoader;
 
     @Autowired
@@ -30,11 +29,7 @@ public class BlogServiceImpl implements IBlogService {
         this.resourceLoader = resourceLoader;
 
 
-        this.admin = Admin.getAdmin();
-        System.out.println(admin.toString());
-
-
-        //Fill the database
+        //Fill the database at the app start
 
         BlogPost applePie = BlogPost.builder()
                 .id(UUID.randomUUID())
@@ -186,15 +181,6 @@ public class BlogServiceImpl implements IBlogService {
 
         return commentaryRepository.getCommentariesByBlogPost_Id(postId);
 
-    }
-
-
-    public boolean signInByPasswordAndEmail(String password, String email) {
-        if (admin.getPassword().equals(password) && admin.getAdminMail().equals(email)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
 

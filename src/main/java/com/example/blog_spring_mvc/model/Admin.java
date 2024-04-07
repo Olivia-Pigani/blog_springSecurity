@@ -1,12 +1,24 @@
 package com.example.blog_spring_mvc.model;
 
 
+import com.example.blog_spring_mvc.entity.RoleType;
+import com.example.blog_spring_mvc.entity.User;
+import com.example.blog_spring_mvc.service.UserService;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@Component // for singleton purpose, there is only one Admin
 @Getter
 @Setter
-public class Admin {
+public class Admin implements  CommandLineRunner {
+
+    private final UserService userService;
+
 
     @Value("${info.admin.email}")
     private String adminEmail;
@@ -15,33 +27,34 @@ public class Admin {
     private String adminPassword;
 
 
-    private String adminMail = adminEmail;
+    private String name = "admin";
 
-    private String password =adminPassword;
+    private String email = adminEmail;
 
+    private String password = adminPassword;
 
-    private static volatile Admin admin = null;
+    private RoleType roleType = RoleType.ADMIN_ROLE;
 
-    private Admin() {
-    }
+    private boolean isEnabled=true;
 
-
-    public static Admin getAdmin(){
-        if (admin == null){
-            synchronized (Admin.class){
-                if (admin == null){
-                    admin = new Admin();
-                }
-            }
-        }
-        return admin;
+    @Autowired
+    public Admin(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
-    public String toString() {
-        return "Admin{" +
-                "adminMail='" + adminMail + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public void run(String... args) throws Exception {
+        Optional<User> adminToFind = userService.findUserByEmail(this.email);
+        if (adminToFind.isEmpty()){
+            User admin = new User();
+            admin.setName(this.name);
+            admin.setEmail(this.email);
+            admin.setPassword(this.password);
+            admin.setRoleType(this.roleType);
+            admin.setEnabled(this.isEnabled);
+            userService.saveUser(admin);
+
+        }
+
     }
 }

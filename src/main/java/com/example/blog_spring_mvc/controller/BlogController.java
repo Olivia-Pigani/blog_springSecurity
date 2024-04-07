@@ -1,31 +1,34 @@
 package com.example.blog_spring_mvc.controller;
 
-import com.example.blog_spring_mvc.dto.AdminDTO;
+import com.example.blog_spring_mvc.dto.BaseResponseDTO;
+import com.example.blog_spring_mvc.dto.UserSignInDTO;
 import com.example.blog_spring_mvc.entity.BlogPost;
 import com.example.blog_spring_mvc.entity.Commentary;
+import com.example.blog_spring_mvc.entity.User;
 import com.example.blog_spring_mvc.service.BlogServiceImpl;
-import com.example.blog_spring_mvc.service.IBlogService;
+import com.example.blog_spring_mvc.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
-@RequiredArgsConstructor
 public class BlogController {
 
+    private final BlogServiceImpl blogService;
 
-    private final IBlogService blogService;
+    private final UserService userService;
 
 
     @Value("my recipes blog")
@@ -33,6 +36,12 @@ public class BlogController {
 
     @Value("hello@myrecipes.com")
     private String contactEmail;
+
+    @Autowired
+    public BlogController(BlogServiceImpl blogService, UserService userService) {
+        this.blogService = blogService;
+        this.userService = userService;
+    }
 
     // HOME
     @GetMapping("/")
@@ -43,8 +52,6 @@ public class BlogController {
         model.addAttribute("contactEmail", contactEmail);
         return "home";
     }
-
-
 
 
     // BLOG POST
@@ -80,12 +87,12 @@ public class BlogController {
     }
 
     @GetMapping("/post-form/{blogPostId}")
-    public String showUpdateForm(@PathVariable("blogPostId") UUID id,Model model){
+    public String showUpdateForm(@PathVariable("blogPostId") UUID id, Model model) {
         BlogPost blogPost = blogService.getBlogPostById(id);
-        if (blogPost != null){
-            model.addAttribute("blogPost",blogPost);
+        if (blogPost != null) {
+            model.addAttribute("blogPost", blogPost);
             return "/post-form";
-        }else {
+        } else {
             return "redirect:/";
         }
     }
@@ -94,20 +101,20 @@ public class BlogController {
     @PostMapping("/addOrUpdateAPost")
     public String addOrUpdateAPostLogic(@Valid @ModelAttribute BlogPost blogPost, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            if (blogPost.getId() != null){
+            if (blogPost.getId() != null) {
                 model.addAttribute("blogPost", blogPost);
                 return "post-form";
 
-            }else{
+            } else {
                 return "post-form";
 
             }
-        }else {
-            if (blogPost.getId() != null){
-                blogService.updateBlogPost(blogPost.getId(),blogPost);
+        } else {
+            if (blogPost.getId() != null) {
+                blogService.updateBlogPost(blogPost.getId(), blogPost);
                 return "redirect:/";
 
-            }else {
+            } else {
 
                 blogService.saveBlogPost(blogPost);
                 return "redirect:/";
@@ -117,7 +124,7 @@ public class BlogController {
 
 
     @GetMapping("/deletepost/{postId}")
-    public String deleteAPost(@PathVariable("postId") UUID id){
+    public String deleteAPost(@PathVariable("postId") UUID id) {
         blogService.deleteBlogPost(id);
         return "redirect:/";
     }
@@ -152,7 +159,7 @@ public class BlogController {
     }
 
     @GetMapping("/deletecomment/{postId}/{commentId}")
-    public String deleteComment (@PathVariable("commentId") UUID commentId, @PathVariable("postId")UUID postId){
+    public String deleteComment(@PathVariable("commentId") UUID commentId, @PathVariable("postId") UUID postId) {
         blogService.deleteCommentary(commentId);
         return "redirect:/details/" + postId;
 
@@ -163,17 +170,32 @@ public class BlogController {
 
     @GetMapping("/auth-form")
     public String getAuthForm(Model model) {
-        model.addAttribute("adminDTO", new AdminDTO());
+//        model.addAttribute()
         return "auth-form";
     }
 
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> registerUser(@RequestBody User newUser){
+       return userService.saveUser(newUser);
+    }
+
     @PostMapping("/signin")
-    public String signIn(@ModelAttribute("adminDTO") AdminDTO adminDTO, Model model, HttpSession session) {
-        BlogServiceImpl castedService = (BlogServiceImpl) blogService;
-        if (castedService.signInByPasswordAndEmail(adminDTO.getPassword(), adminDTO.getAdminMail())) {
-            session.setAttribute("isLogged", true);
-            return "redirect:/";
+    public String signIn(@ModelAttribute("userSignInDTO") UserSignInDTO userSignInDTO, Model model, HttpSession session) {
+        if (userService.findUserByEmail(userSignInDTO.getEmail()).isPresent()) {
+            if (userService.verifyUser(userSignInDTO.getEmail(), userSignInDTO.getPassword())) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("token", userService.generateToken(userSignInDTO.getEmail(), userSignInDTO.getPassword()));
+                new BaseResponseDTO("success", data);
+                session.setAttribute("isLogged", true);
+                return "redirect:/";
+            } else {
+                new BaseResponseDTO("wrong password");
+                return "redirect:/";
+            }
+
         } else {
+            new BaseResponseDTO("user not exist");
             session.setAttribute("isLogged", false);
             return "auth-form";
         }
@@ -181,11 +203,10 @@ public class BlogController {
     }
 
     @GetMapping("signout")
-    public String signOut(HttpSession session) {
+    public String signOut(HttpSession session) { // still keep HttpSession
         session.setAttribute("isLogged", false);
         return "redirect:/";
     }
-
 
 
 }

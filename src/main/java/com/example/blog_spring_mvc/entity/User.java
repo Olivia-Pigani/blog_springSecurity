@@ -8,12 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 @Entity
+@Table(name = "user")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Person implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,17 +23,25 @@ public class Person implements UserDetails {
     private String name;
 
     @Column(unique = true,nullable = false)
-    private String username;// equal email
+    private String email;
 
     private String password;
 
-    private Set<RoleType> roles = new HashSet<>();
+    //There is only one admin with ADMIN_ROLE in the app ( there is a singleton for it, managed by Spring, annoted with @Component, become a user and persisted in the "user" table ),
+    //  but we can have many users with USER_ROLE ( managed by JPA with @Entity ).
+    private RoleType roleType = RoleType.USER_ROLE;
 
     private boolean isEnabled=true;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    @Override
+    public String getUsername() { // username is equal to email
+        return email;
     }
 
     @Override
@@ -49,4 +58,8 @@ public class Person implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return false;
     }
+
+
+
+
 }
