@@ -7,6 +7,7 @@ import com.example.blog_spring_mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +31,7 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Autowired
-    public SecurityConfig(UserService userService, JwtProvider jwtProvider, JwtAuthEntryPoint jwtAuthEntryPoint, AuthenticationConfiguration authenticationConfiguration) {
+    public SecurityConfig(UserService userService,JwtProvider jwtProvider, JwtAuthEntryPoint jwtAuthEntryPoint, AuthenticationConfiguration authenticationConfiguration) {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;

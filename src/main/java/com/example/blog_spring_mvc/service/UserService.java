@@ -4,6 +4,7 @@ import com.example.blog_spring_mvc.config.JwtProvider;
 import com.example.blog_spring_mvc.entity.User;
 import com.example.blog_spring_mvc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,7 +31,7 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, @Lazy AuthenticationManager authenticationManager,@Lazy JwtProvider jwtProvider,@Lazy  PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
