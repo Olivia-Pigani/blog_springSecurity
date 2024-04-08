@@ -28,8 +28,6 @@ public class BlogController {
 
     private final BlogServiceImpl blogService;
 
-    private final UserService userService;
-
 
     @Value("my recipes blog")
     private String blogName;
@@ -38,9 +36,8 @@ public class BlogController {
     private String contactEmail;
 
     @Autowired
-    public BlogController(BlogServiceImpl blogService, UserService userService) {
+    public BlogController(BlogServiceImpl blogService) {
         this.blogService = blogService;
-        this.userService = userService;
     }
 
     // HOME
@@ -163,49 +160,6 @@ public class BlogController {
         blogService.deleteCommentary(commentId);
         return "redirect:/details/" + postId;
 
-    }
-
-
-    // AUTHENTIFICATION
-
-    @GetMapping("/auth-form")
-    public String getAuthForm(Model model) {
-//        model.addAttribute()
-        return "auth-form";
-    }
-
-
-    @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody User newUser){
-       return userService.saveUser(newUser);
-    }
-
-    @PostMapping("/signin")
-    public String signIn(@ModelAttribute("userSignInDTO") UserSignInDTO userSignInDTO, Model model, HttpSession session) {
-        if (userService.findUserByEmail(userSignInDTO.getEmail()).isPresent()) {
-            if (userService.verifyUser(userSignInDTO.getEmail(), userSignInDTO.getPassword())) {
-                Map<String, Object> data = new HashMap<>();
-                data.put("token", userService.generateToken(userSignInDTO.getEmail(), userSignInDTO.getPassword()));
-                new BaseResponseDTO("success", data);
-                session.setAttribute("isLogged", true);
-                return "redirect:/";
-            } else {
-                new BaseResponseDTO("wrong password");
-                return "redirect:/";
-            }
-
-        } else {
-            new BaseResponseDTO("user not exist");
-            session.setAttribute("isLogged", false);
-            return "auth-form";
-        }
-
-    }
-
-    @GetMapping("signout")
-    public String signOut(HttpSession session) { // still keep HttpSession
-        session.setAttribute("isLogged", false);
-        return "redirect:/";
     }
 
 
