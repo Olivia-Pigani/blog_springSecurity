@@ -49,12 +49,9 @@ public class AuthenticationController {
 //
 //    }
 //
-//    @GetMapping("signout")
-//    public String signOut(HttpSession session) { // still keep HttpSession
-//        session.setAttribute("isLogged", false);
-//        return "redirect:/";
-//    }
-//
+
+
+// no sign out in here, we'll manage this one in thymeleaf html files
 
 
 
