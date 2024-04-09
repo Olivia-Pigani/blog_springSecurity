@@ -41,12 +41,14 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<String> saveUser(User newUser){
         if (findUserByEmail(newUser.getEmail()).isEmpty()){
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            userRepository.save(newUser);
-            return new ResponseEntity<>("The user has been successfully saved !",HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("This email already exists !",HttpStatus.NOT_ACCEPTABLE);
+            if (newUser.getPassword() != null && !newUser.getPassword().isEmpty()) {
+                newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+                userRepository.save(newUser);
+                return new ResponseEntity<>("The user has been successfully saved !", HttpStatus.OK);
+            }
         }
+            return new ResponseEntity<>("This email already exists !",HttpStatus.NOT_ACCEPTABLE);
+
 
     }
 

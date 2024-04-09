@@ -4,6 +4,7 @@ package com.example.blog_spring_mvc.model;
 import com.example.blog_spring_mvc.entity.RoleType;
 import com.example.blog_spring_mvc.entity.User;
 import com.example.blog_spring_mvc.service.UserService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ public class Admin implements  CommandLineRunner {
 
     private String email = adminEmail;
 
+//    @NotBlank
     private String password = adminPassword;
 
     private RoleType roleType = RoleType.ADMIN_ROLE;

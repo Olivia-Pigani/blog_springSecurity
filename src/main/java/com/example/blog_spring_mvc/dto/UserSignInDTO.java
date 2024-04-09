@@ -16,6 +16,7 @@ public class UserSignInDTO {
     @NotBlank
     private String email;
 
+//    @NotBlank
     @Size(min = 6,max = 150)
     private String password;
 

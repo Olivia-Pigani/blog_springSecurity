@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private String email;
 
     @Size(min = 6,max = 150)
+//    @NotBlank
     private String password;
 
     //There is only one admin with ADMIN_ROLE in the app ( there is a singleton for it, managed by Spring, annoted with @Component, become a user and persisted in the "user" table ),
@@ -46,7 +47,6 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(roleType.name()));
     }
-
     @Override
     public String getUsername() { // username is equal to email
         return email;
