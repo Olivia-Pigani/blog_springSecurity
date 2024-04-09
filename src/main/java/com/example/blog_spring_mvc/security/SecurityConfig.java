@@ -67,7 +67,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 
+
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/css/**", "/image/**").permitAll() //static
                         .requestMatchers("/","/details/{postId}","/auth-form","/signin").permitAll()
                         .requestMatchers("/com-form/{postId}","/addCommentary/{postId}").hasAnyRole("USER","ADMIN")
                         .requestMatchers("/post-form/**","/addOrUpdateAPost/","/deletepost/**").hasRole("ADMIN")
