@@ -1,7 +1,5 @@
 package com.example.blog_spring_mvc.controller;
 
-import com.example.blog_spring_mvc.dto.BaseResponseDTO;
-import com.example.blog_spring_mvc.dto.UserSignInDTO;
 import com.example.blog_spring_mvc.entity.BlogPost;
 import com.example.blog_spring_mvc.entity.Commentary;
 import com.example.blog_spring_mvc.entity.User;
