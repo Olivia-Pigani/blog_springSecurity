@@ -19,15 +19,15 @@
     <h1 class="my-4">Authentification's form</h1>
 
 
-    <form th:action="@{/signin}" th:object="${adminDTO}" method="post">
+    <form th:action="@{/signin}" th:object="${userSignInDTO}" method="post">
 
         <div class="mb-3">
-            <label for="adminMail" class="form-label">adminMail</label>
-            <input type="text" class="form-control" id="adminMail" aria-describedby="emailHelp" th:field="*{adminMail}">
+            <label for="email" class="form-label">email</label>
+            <input type="text" class="form-control" id="email" aria-describedby="emailHelp" th:field="*{email}">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">password</label>
-            <input type="text" class="form-control" id="password" th:field="*{password}">
+            <input type="password" class="form-control" id="password" th:field="*{password}">
         </div>
 
         <button type="submit" class="btn btn-primary">Sign in</button>
